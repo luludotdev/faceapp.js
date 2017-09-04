@@ -5,7 +5,7 @@ const randomstring = require('randomstring')
  * Generate a random Device ID
  * @returns {string}
  */
-const generateDeviceID = () => randomstring(16)
+const generateDeviceID = () => randomstring.generate(16)
 
 module.exports = {
   API_BASE_URL: 'https://node-03.faceapp.io',
