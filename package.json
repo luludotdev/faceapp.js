@@ -1,0 +1,33 @@
+{
+  "name": "faceapp",
+  "version": "0.1.0",
+  "description": "JavaScript API wrapper for the FaceApp tool for Android and iOS",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "eslint src/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lolPants/faceapp.js.git"
+  },
+  "keywords": [
+    "faceapp",
+    "face",
+    "app",
+    "api",
+    "wrapper",
+    "android",
+    "ios",
+    "facial",
+    "recognition",
+    "processing",
+    "neural",
+    "network"
+  ],
+  "author": "Jack Baron <me@jackbaron.com> (https://www.jackbaron.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lolPants/faceapp.js/issues"
+  },
+  "homepage": "https://github.com/lolPants/faceapp.js#readme"
+}
