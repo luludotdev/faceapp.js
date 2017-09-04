@@ -98,7 +98,18 @@ const faceApp = async (path, filterID) => {
     let img = await getFilterImage(arg, filterID)
     return img
   } catch (err) {
-    throw err
+    if (err.status === 400) {
+      /**
+       * @type {string}
+       */
+      let code = err.response.body.err.code || ''
+      // Known Error Codes
+      if (code === 'photo_no_faces') throw new Error('No Faces found in Photo')
+      else if (code === 'bad_filter_id') throw new Error('Invalid Filter ID')
+      else throw err
+    } else {
+      throw err
+    }
   }
 }
 
