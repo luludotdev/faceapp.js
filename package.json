@@ -29,5 +29,9 @@
   "bugs": {
     "url": "https://github.com/lolPants/faceapp.js/issues"
   },
-  "homepage": "https://github.com/lolPants/faceapp.js#readme"
+  "homepage": "https://github.com/lolPants/faceapp.js#readme",
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^4.6.1"
+  }
 }
