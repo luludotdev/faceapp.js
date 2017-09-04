@@ -73,7 +73,33 @@ const getFilterImage = async (args, filterID = 'no-filter') => {
   }
 }
 
-module.exports = {
-  getAvailableFilters,
-  getFilterImage,
+/**
+ * Runs an image through the [FaceApp](https://www.faceapp.com/) Algorithm
+ * 
+ * Known Filter IDs:
+ * * no-filter
+ * * smile
+ * * smile_2
+ * * hot
+ * * old
+ * * young
+ * * female_2
+ * * female
+ * * male
+ * @param {string} path Image Path
+ * @param {string} [filterID] Filter ID
+ * @returns {Promise.<Buffer>}
+ * @example
+ * let image = await faceApp('./path/to/image.png', 'female_2')
+ */
+const faceApp = async (path, filterID) => {
+  try {
+    let arg = await getAvailableFilters(path)
+    let img = await getFilterImage(arg, filterID)
+    return img
+  } catch (err) {
+    throw err
+  }
 }
+
+module.exports = faceApp
