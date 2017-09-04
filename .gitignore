@@ -38,3 +38,7 @@ jspm_packages
 
 # Docs
 docs
+
+# VSCode
+.vscode
+dev
