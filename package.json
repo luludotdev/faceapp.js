@@ -1,6 +1,6 @@
 {
   "name": "faceapp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "JavaScript API wrapper for the FaceApp tool for Android and iOS",
   "main": "src/index.js",
   "scripts": {

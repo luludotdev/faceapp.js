@@ -15,3 +15,37 @@
 ## Installation
 Using NPM: `npm install faceapp`  
 Using Yarn: `yarn add faceapp`
+
+## Usage
+First, import the module
+```js
+const faceApp = require('faceapp')
+```
+
+The function takes two parameters:
+* `path: string` - Path to the image file you would like to process
+* `filterID: string` - FaceApp Filter ID
+
+### Known Filter IDs
+* `no-filter`
+* `smile`
+* `smile_2`
+* `hot`
+* `old`
+* `young`
+* `female_2`
+* `female`
+* `male`
+
+### Example
+```js
+// Import the module
+const faceApp = require('faceapp')
+
+// Fun
+let image = await faceApp('path/to/image.png', 'smile_2')
+```
+
+## Thanks
+* [FaceApp](https://www.faceapp.com/)
+* [Superagent](https://visionmedia.github.io/superagent/)
