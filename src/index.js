@@ -115,4 +115,22 @@ const process = async (path, filterID) => {
   }
 }
 
-module.exports = { process }
+/**
+ * Lists all available filters
+ * @param {boolean} [minimal=false] Whether to only return an array of filter IDs (no extra metadata)
+ * @returns {Promise.<Filter[]>|Promise.<string[]>}
+ */
+const listFilters = async (minimal = false) => {
+  try {
+    let res = await superagent.get(constants.TEST_IMAGE_URL)
+    let allFilters = await getAvailableFilters(res.body)
+    return minimal ? allFilters.filters.map(a => a.id) : allFilters.filters
+  } catch (err) {
+    throw err
+  }
+}
+
+module.exports = {
+  process,
+  listFilters,
+}
