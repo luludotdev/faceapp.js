@@ -19,16 +19,16 @@ const superagent = require('superagent')
  */
 
 /**
- * @param {string} path Input File
+ * @param {string|Buffer} file Input File
  * @returns {Promise.<AvailableFilters>}
  */
-const getAvailableFilters = async path => {
+const getAvailableFilters = async file => {
   let deviceID = constants.generateDeviceID()
   try {
     let res = await superagent.post(`${constants.API_BASE_URL}/api/v2.6/photos`)
       .set('User-Agent', constants.API_USER_AGENT)
       .set('X-FaceApp-DeviceID', deviceID)
-      .attach('file', path)
+      .attach('file', file, 'image.png')
 
     let code = res.body.code
     let filters = res.body.filters
@@ -88,7 +88,7 @@ const getFilterImage = async (args, filterID = 'no-filter') => {
  * * male
  * * pan
  * * hitman
- * @param {string} path Image Path
+ * @param {string|Buffer} path Path to Image OR Image Buffer
  * @param {string} [filterID] Filter ID
  * @returns {Promise.<Buffer>}
  * @example
