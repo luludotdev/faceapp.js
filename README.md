@@ -19,14 +19,29 @@ Using Yarn: `yarn add faceapp`
 ## Usage
 First, import the module
 ```js
-const faceApp = require('faceapp')
+const faceapp = require('faceapp')
 ```
 
 The function takes two parameters:
-* `path: string` - Path to the image file you would like to process
+* `path: string | file: Buffer` - Path to the image file you would like to process. Or a Buffer object representing an image.
 * `filterID: string` - FaceApp Filter ID
 
-### Known Filter IDs
+### Example
+```js
+// Import the module
+const faceapp = require('faceapp')
+
+// Process the image (filepath)
+let image = await faceapp.process('path/to/image.png', 'smile_2')
+
+// Process the image (buffer)
+// First we have to get a buffer
+let res = await superagent.get('http://example.com/image.png')
+let image = await faceapp.process(res.body, 'hot')
+```
+
+### Filter IDs
+There are some known Filter IDs:
 * `no-filter`
 * `smile`
 * `smile_2`
@@ -39,13 +54,14 @@ The function takes two parameters:
 * `pan`
 * `hitman`
 
-### Example
-```js
-// Import the module
-const faceapp = require('faceapp')
+However, you can get an up-to-date list of all available filter IDs from the API directly using the `listFilters` function.
 
-// Process the image
-let image = await faceapp.process('path/to/image.png', 'smile_2')
+```js
+let filters = await faceapp.listFilters()
+// Returns an array of Filter objects
+
+let filters = await faceapp.listFilters(true)
+// Returns an array filter ID strings
 ```
 
 ## Thanks
