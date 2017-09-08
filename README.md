@@ -42,10 +42,10 @@ The function takes two parameters:
 ### Example
 ```js
 // Import the module
-const faceApp = require('faceapp')
+const faceapp = require('faceapp')
 
-// Fun
-let image = await faceApp('path/to/image.png', 'smile_2')
+// Process the image
+let image = await faceapp.process('path/to/image.png', 'smile_2')
 ```
 
 ## Thanks
