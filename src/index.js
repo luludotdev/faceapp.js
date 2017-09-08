@@ -94,7 +94,7 @@ const getFilterImage = async (args, filterID = 'no-filter') => {
  * @example
  * let image = await faceApp('./path/to/image.png', 'female_2')
  */
-const faceapp = async (path, filterID) => {
+const process = async (path, filterID) => {
   try {
     let arg = await getAvailableFilters(path)
     let img = await getFilterImage(arg, filterID)
@@ -115,6 +115,4 @@ const faceapp = async (path, filterID) => {
   }
 }
 
-module.exports = {
-  process: faceapp,
-}
+module.exports = { process }
