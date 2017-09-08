@@ -36,6 +36,8 @@ The function takes two parameters:
 * `female_2`
 * `female`
 * `male`
+* `pan`
+* `hitman`
 
 ### Example
 ```js
