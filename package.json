@@ -31,11 +31,10 @@
   },
   "homepage": "https://github.com/lolPants/faceapp.js#readme",
   "devDependencies": {
-    "babel-eslint": "^7.2.3",
-    "eslint": "^4.6.1"
+    "eslint": "^4.8.0"
   },
   "dependencies": {
     "randomstring": "^1.1.5",
-    "superagent": "^3.6.0"
+    "superagent": "^3.6.3"
   }
 }
