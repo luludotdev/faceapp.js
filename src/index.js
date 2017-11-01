@@ -46,7 +46,6 @@ const getAvailableFilters = async file => {
 }
 
 /**
- * 
  * @param {AvailableFilters} args Input Object
  * @param {string} filterID Filter ID
  * @returns {Promise.<Buffer>}
@@ -75,7 +74,6 @@ const getFilterImage = async (args, filterID = 'no-filter') => {
 
 /**
  * Runs an image through the [FaceApp](https://www.faceapp.com/) Algorithm
- * 
  * Known Filter IDs:
  * * no-filter
  * * smile
