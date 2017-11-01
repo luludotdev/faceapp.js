@@ -32,11 +32,11 @@ const getAvailableFilters = async file => {
 
     let code = res.body.code
     let filters = res.body.filters
-      .filter(o => o.is_paid === false && o.group === '0')
       .map(o => ({
         id: o.id,
         title: o.title,
-        cropped: o.only_cropped,
+        cropped: o.is_paid ? true : o.only_cropped,
+        paid: o.is_paid,
       }))
 
     return { code, deviceID, filters }
