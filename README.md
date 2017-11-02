@@ -53,6 +53,16 @@ There are some known Filter IDs:
 * `male`
 * `pan`
 * `hitman`
+* `hollywood`
+* `heisenberg`
+* `impression`
+* `lion`
+* `goatee`
+* `hipster`
+* `bangs`
+* `glasses`
+* `wave`
+* `makeup`
 
 However, you can get an up-to-date list of all available filter IDs from the API directly using the `listFilters` function.
 
