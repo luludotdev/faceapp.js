@@ -88,6 +88,16 @@ const getFilterImage = async (args, filterID = 'no-filter') => {
  * * male
  * * pan
  * * hitman
+ * * hollywood
+ * * heisenberg
+ * * impression
+ * * lion
+ * * goatee
+ * * hipster
+ * * bangs
+ * * glasses
+ * * wave
+ * * makeup
  * @param {string|Buffer} path Path to Image OR Image Buffer
  * @param {string} [filterID] Filter ID
  * @returns {Promise.<Buffer>}
