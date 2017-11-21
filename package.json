@@ -1,6 +1,6 @@
 {
   "name": "faceapp",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "JavaScript API wrapper for the FaceApp tool for Android and iOS",
   "main": "src/index.js",
   "scripts": {
@@ -31,10 +31,10 @@
   },
   "homepage": "https://github.com/lolPants/faceapp.js#readme",
   "devDependencies": {
-    "eslint": "^4.10.0"
+    "eslint": "^4.11.0"
   },
   "dependencies": {
     "randomstring": "^1.1.5",
-    "superagent": "^3.8.0"
+    "superagent": "^3.8.1"
   }
 }
