@@ -1,5 +1,5 @@
 // Local Dependencies
-const constants = require('./constants')
+const { generateDeviceID, API_BASE_URL, API_USER_AGENT, TEST_IMAGE_URL } = require('./constants')
 
 // Package Dependencies
 const superagent = require('superagent')
@@ -23,10 +23,10 @@ const superagent = require('superagent')
  * @returns {Promise.<AvailableFilters>}
  */
 const getAvailableFilters = async file => {
-  let deviceID = constants.generateDeviceID()
+  let deviceID = generateDeviceID()
   try {
-    let res = await superagent.post(`${constants.API_BASE_URL}/api/v2.6/photos`)
-      .set('User-Agent', constants.API_USER_AGENT)
+    let res = await superagent.post(`${API_BASE_URL}/api/v2.6/photos`)
+      .set('User-Agent', API_USER_AGENT)
       .set('X-FaceApp-DeviceID', deviceID)
       .attach('file', file, 'image.png')
 
@@ -59,14 +59,14 @@ const getFilterImage = async (args, filterID = 'no-filter') => {
 
   let filter = filterArr[0]
   let cropped = filter.cropped ? '1' : '0'
-  let url = `${constants.API_BASE_URL}/api/v2.6/photos/${args.code}/filters/${filter.id}?cropped=${cropped}`
+  let url = `${API_BASE_URL}/api/v2.6/photos/${args.code}/filters/${filter.id}?cropped=${cropped}`
 
   try {
-    let res = await superagent.get(url)
-      .set('User-Agent', constants.API_USER_AGENT)
+    let { body } = await superagent.get(url)
+      .set('User-Agent', API_USER_AGENT)
       .set('X-FaceApp-DeviceID', args.deviceID)
 
-    return res.body
+    return body
   } catch (err) {
     throw err
   }
@@ -74,28 +74,8 @@ const getFilterImage = async (args, filterID = 'no-filter') => {
 
 /**
  * Runs an image through the [FaceApp](https://www.faceapp.com/) Algorithm
- * Known Filter IDs:
- * * no-filter
- * * smile
- * * smile_2
- * * hot
- * * old
- * * young
- * * female_2
- * * female
- * * male
- * * pan
- * * hitman
- * * hollywood
- * * heisenberg
- * * impression
- * * lion
- * * goatee
- * * hipster
- * * bangs
- * * glasses
- * * wave
- * * makeup
+ *
+ * For a list of filters see `listFilters()`
  * @param {string|Buffer} path Path to Image OR Image Buffer
  * @param {string} [filterID] Filter ID
  * @returns {Promise.<Buffer>}
@@ -130,8 +110,8 @@ const process = async (path, filterID) => {
  */
 const listFilters = async (minimal = false) => {
   try {
-    let res = await superagent.get(constants.TEST_IMAGE_URL)
-    let allFilters = await getAvailableFilters(res.body)
+    let { body } = await superagent.get(TEST_IMAGE_URL)
+    let allFilters = await getAvailableFilters(body)
     return minimal ? allFilters.filters.map(a => a.id) : allFilters.filters
   } catch (err) {
     throw err
