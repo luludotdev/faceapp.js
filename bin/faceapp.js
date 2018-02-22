@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const program = require('commander')
 const chalk = require('chalk')
+const fs = require('fs-extra')
 const faceapp = require('../src/index')
 
 // Allow Console Statements
@@ -8,7 +9,9 @@ const faceapp = require('../src/index')
 
 program
   .version(require('../package.json').version)
-  .option('-o, --output', 'filepath to output to')
+  .arguments('<input>')
+  .option('-o, --output <file>', 'file name or path to output to (otherwise overwrites original file)')
+  .option('-f, --filter <id>', 'filter id to process with')
   .option('-l, --list-filters', 'lists all filters you can use')
   .parse(process.argv)
 
@@ -35,9 +38,34 @@ ${paid.map(x => x.id).join(' ')}`)
 
 /**
  * @param {program} p Commander Program
+ * @returns {*}
  */
 const run = async p => {
-  console.log('yes')
+  if (!p.filter) {
+    console.log(chalk.red('--filter not specified'))
+    return false
+  }
+
+  let [input] = p.args
+  let { output, filter } = p
+
+  let exists = await fs.exists(input)
+  if (!exists) {
+    console.log(chalk.red('file not found'))
+    return false
+  }
+
+  try {
+    let image = await fs.readFile(input)
+    let final = await faceapp.process(image, filter)
+
+    if (output) await fs.writeFile(output, final)
+    else await fs.writeFile(input, final)
+
+    console.log(chalk.green(`saved ${output ? output : input} successfully!`))
+  } catch (err) {
+    console.log(chalk.red(err.message))
+  }
 }
 
 main(program)
