@@ -29,10 +29,10 @@ const listFilters = async () => {
   let free = filters.filter(x => !x.paid)
   let paid = filters.filter(x => x.paid)
 
-  console.log(chalk`{blue ${'Free Filters:'}}
+  console.log(chalk`{green ${'Free Filters:'}}
 ${free.map(x => x.id).join(' ')}
 
-{blue ${'Paid Filters:'}}
+{green ${'Paid Filters:'}}
 ${paid.map(x => x.id).join(' ')}`)
 }
 
