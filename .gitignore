@@ -42,3 +42,8 @@ docs
 # VSCode
 .vscode
 dev
+
+# Test Images
+*.png
+*.jpg
+*.jpeg
