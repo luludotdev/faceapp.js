@@ -33,6 +33,9 @@ let { body } = await superagent.get('http://example.com/image.png')
 let image = await faceapp.process(body, 'hot')
 ```
 
+### ⌨ CLI
+There is a CLI available. Install the package globally using `npm i -g faceapp` and then you can just run `faceapp` to access the CLI.
+
 ### 📜 Filter IDs
 Known Filters: |  |  |  |  |
 --- | --- | --- | --- | --- |
