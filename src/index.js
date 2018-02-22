@@ -9,6 +9,7 @@ const superagent = require('superagent')
  * @property {string} id
  * @property {string} title
  * @property {boolean} cropped
+ * @property {boolean} paid
  */
 
 /**
