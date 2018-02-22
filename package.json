@@ -1,8 +1,9 @@
 {
   "name": "faceapp",
-  "version": "0.3.4",
+  "version": "0.4.0",
   "description": "JavaScript API wrapper for the FaceApp tool for Android and iOS",
   "main": "src/index.js",
+  "bin": "bin/faceapp.js",
   "scripts": {
     "test": "eslint --color src/"
   },
@@ -34,6 +35,7 @@
     "eslint": "^4.18.1"
   },
   "dependencies": {
+    "commander": "^2.14.1",
     "randomstring": "^1.1.5",
     "superagent": "^3.8.2"
   }
