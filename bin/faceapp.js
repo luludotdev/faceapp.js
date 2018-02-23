@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const { Spinner } = require('cli-spinner')
 const program = require('commander')
 const chalk = require('chalk')
 const fs = require('fs-extra')
@@ -55,6 +56,9 @@ const run = async p => {
     return false
   }
 
+  let spinner = new Spinner('%s processing...')
+  spinner.setSpinnerString(process.platform === 'win32' ? 0 : 18)
+  spinner.start()
   try {
     let image = await fs.readFile(input)
     let final = await faceapp.process(image, filter)
@@ -62,8 +66,10 @@ const run = async p => {
     if (output) await fs.writeFile(output, final)
     else await fs.writeFile(input, final)
 
+    spinner.stop(true)
     console.log(chalk.green(`saved ${output ? output : input} successfully!`))
   } catch (err) {
+    spinner.stop(true)
     console.log(chalk.red(err.message))
   }
 }
