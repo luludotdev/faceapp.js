@@ -6,6 +6,12 @@
 
 ##### JavaScript API wrapper for the FaceApp tool for Android and iOS. Licensed under ISC License.
 
+## ⚠️ Warning
+`faceapp.js` is an **unofficial** reverse-engineering of the mobile clients and the servers they interact with. This means that it is subject to any of their limitations.  
+This includes their rate limits. **I will not attempt to bypass this as that would break their terms of service**, please stop asking <3.
+
+*USE AT YOUR OWN RISK.*
+
 ## 💾 Installation
 The package is on the NPM registry as `faceapp`. Simply install it with your NPM client of choice.
 
