@@ -8,9 +8,13 @@
 
 ## ⚠️ Warning
 `faceapp.js` is an **unofficial** reverse-engineering of the mobile clients and the servers they interact with. This means that it is subject to any of their limitations.  
-This includes their rate limits. **I will not attempt to bypass this as that would break their terms of service**, please stop asking <3.
+This includes their rate limits. **I will not attempt to bypass this as that would break their terms of service**, please stop asking ❤.
 
-*USE AT YOUR OWN RISK.*
+***USE AT YOUR OWN RISK.***
+
+### Rate Limits
+**NOTE:** These are just an estimation based on my own testing.  
+The FaceApp servers only accept 100 requests in a 10 minute window. Because `process()` uses two API calls, you can only use `process()` 50 times during that 10 minute window.
 
 ## 💾 Installation
 The package is on the NPM registry as `faceapp`. Simply install it with your NPM client of choice.
@@ -40,7 +44,7 @@ let image = await faceapp.process(body, 'hot')
 ```
 
 ### ⌨ CLI
-There is a CLI available. Install the package globally using `npm i -g faceapp` and then you can just run `faceapp` to access the CLI.
+There is a CLI available. Install the package globally using `npm i -g faceapp` and then run `faceapp` to access the CLI.
 
 ### 📜 Filter IDs
 Known Filters: |  |  |  |  |
