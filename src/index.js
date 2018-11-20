@@ -33,7 +33,7 @@ const getAvailableFilters = async file => {
     console.log(res.body)
 
     let code = res.body.code
-    let filters = res.body.filters
+    let filters = res.body.objects[0].children
       .map(o => ({
         id: o.id,
         title: o.title,
