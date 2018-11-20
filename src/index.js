@@ -26,13 +26,13 @@ const superagent = require('superagent')
 const getAvailableFilters = async file => {
   let deviceID = generateDeviceID()
   try {
-    let res = await superagent.post(`${API_BASE_URL}/api/v2.6/photos`)
+    let res = await superagent.post(`${API_BASE_URL}/api/v2.11/photos`)
       .set('User-Agent', API_USER_AGENT)
       .set('X-FaceApp-DeviceID', deviceID)
       .attach('file', file, 'image.png')
 
     let code = res.body.code
-    let filters = res.body.filters
+    let filters = res.body.objects[0].children
       .map(o => ({
         id: o.id,
         title: o.title,
@@ -60,7 +60,7 @@ const getFilterImage = async (args, filterID = 'no-filter') => {
 
   let filter = filterArr[0]
   let cropped = filter.cropped ? '1' : '0'
-  let url = `${API_BASE_URL}/api/v2.6/photos/${args.code}/filters/${filter.id}?cropped=${cropped}`
+  let url = `${API_BASE_URL}/api/v2.11/photos/${args.code}/filters/${filter.id}?cropped=${cropped}`
 
   try {
     let { body } = await superagent.get(url)
