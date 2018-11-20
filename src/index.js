@@ -60,7 +60,7 @@ const getFilterImage = async (args, filterID = 'no-filter') => {
 
   let filter = filterArr[0]
   let cropped = filter.cropped ? '1' : '0'
-  let url = `${API_BASE_URL}/api/v2.6/photos/${args.code}/filters/${filter.id}?cropped=${cropped}`
+  let url = `${API_BASE_URL}/api/v2.11/photos/${args.code}/filters/${filter.id}?cropped=${cropped}`
 
   try {
     let { body } = await superagent.get(url)
