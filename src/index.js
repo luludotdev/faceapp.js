@@ -24,15 +24,16 @@ const superagent = require('superagent')
  * @returns {Promise.<AvailableFilters>}
  */
 const getAvailableFilters = async file => {
-  let deviceID = generateDeviceID()
+  const deviceID = generateDeviceID()
+
   try {
-    let res = await superagent.post(`${API_BASE_URL}/api/v2.11/photos`)
+    const { body } = await superagent.post(`${API_BASE_URL}/api/v2.11/photos`)
       .set('User-Agent', API_USER_AGENT)
       .set('X-FaceApp-DeviceID', deviceID)
       .attach('file', file, 'image.png')
 
-    let code = res.body.code
-    let filters = res.body.objects[0].children
+    const { code } = body
+    const filters = body.objects[0].children
       .map(o => ({
         id: o.id,
         title: o.title,
@@ -52,18 +53,19 @@ const getAvailableFilters = async file => {
  * @returns {Promise.<Buffer>}
  */
 const getFilterImage = async (args, filterID = 'no-filter') => {
-  let filterArr = args.filters.filter(o => o.id === filterID)
+  const filterArr = args.filters.filter(o => o.id === filterID)
+
   if (filterArr.length === 0) {
     let filters = args.filters.map(o => o.id).join(', ')
     throw new Error(`Invalid Filter ID\nAvailable Filters: '${filters}'`)
   }
 
-  let filter = filterArr[0]
-  let cropped = filter.cropped ? '1' : '0'
-  let url = `${API_BASE_URL}/api/v2.11/photos/${args.code}/filters/${filter.id}?cropped=${cropped}`
+  const [filter] = filterArr
+  const cropped = filter.cropped ? '1' : '0'
+  const url = `${API_BASE_URL}/api/v2.11/photos/${args.code}/filters/${filter.id}?cropped=${cropped}`
 
   try {
-    let { body } = await superagent.get(url)
+    const { body } = await superagent.get(url)
       .set('User-Agent', API_USER_AGENT)
       .set('X-FaceApp-DeviceID', args.deviceID)
 
@@ -85,15 +87,17 @@ const getFilterImage = async (args, filterID = 'no-filter') => {
  */
 const process = async (path, filterID) => {
   try {
-    let arg = await getAvailableFilters(path)
-    let img = await getFilterImage(arg, filterID)
+    const arg = await getAvailableFilters(path)
+    const img = await getFilterImage(arg, filterID)
+
     return img
   } catch (err) {
     if (err.status === 400) {
       /**
        * @type {string}
        */
-      let code = err.response.body.err.code || ''
+      const code = err.response.body.err.code || ''
+
       // Known Error Codes
       if (code === 'photo_no_faces') throw new Error('No Faces found in Photo')
       else if (code === 'bad_filter_id') throw new Error('Invalid Filter ID')
@@ -111,9 +115,12 @@ const process = async (path, filterID) => {
  */
 const listFilters = async (minimal = false) => {
   try {
-    let { body } = await superagent.get(TEST_IMAGE_URL)
-    let allFilters = await getAvailableFilters(body)
-    return minimal ? allFilters.filters.map(a => a.id) : allFilters.filters
+    const { body } = await superagent.get(TEST_IMAGE_URL)
+    const allFilters = await getAvailableFilters(body)
+
+    return minimal ?
+      allFilters.filters.map(a => a.id) :
+      allFilters.filters
   } catch (err) {
     throw err
   }
