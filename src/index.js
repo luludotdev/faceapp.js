@@ -26,7 +26,7 @@ const superagent = require('superagent')
 const getAvailableFilters = async file => {
   let deviceID = generateDeviceID()
   try {
-    let res = await superagent.post(`${API_BASE_URL}/api/v3.1/photos`)
+    let res = await superagent.post(`${API_BASE_URL}/api/v2.11/photos`)
       .set('User-Agent', API_USER_AGENT)
       .set('X-FaceApp-DeviceID', deviceID)
       .attach('file', file, 'image.png')
