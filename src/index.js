@@ -30,6 +30,7 @@ const getAvailableFilters = async file => {
       .set('User-Agent', API_USER_AGENT)
       .set('X-FaceApp-DeviceID', deviceID)
       .attach('file', file, 'image.png')
+    console.log(res.body)
 
     let code = res.body.code
     let filters = res.body.filters
