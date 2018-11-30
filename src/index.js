@@ -25,21 +25,48 @@ const superagent = require('superagent')
  */
 const getAvailableFilters = async file => {
   const deviceID = generateDeviceID()
-
   try {
-    const { body } = await superagent.post(`${API_BASE_URL}/api/v2.11/photos`)
+    let body = {
+      app_version: '3.2.1',
+      device_id: deviceID,
+      registration_id: deviceID,
+      device_model: 'ZTE U950',
+      lang_code: 'en-US',
+      sandbox: 'False',
+      system_version: '4.4.2',
+      token_type: 'fcm',
+    }
+    await superagent.post('https://api.faceapp.io/api/v3.0/devices/register')
+      .set('Content-Type', 'application/json')
+      .set('User-Agent', API_USER_AGENT)
+      .set('X-FaceApp-DeviceID', deviceID)
+      .send(JSON.stringify(body))
+  } catch (err) {
+    throw err
+  }
+  try {
+    const { body } = await superagent.post(`${API_BASE_URL}/api/v3.1/photos`)
       .set('User-Agent', API_USER_AGENT)
       .set('X-FaceApp-DeviceID', deviceID)
       .attach('file', file, 'image.png')
 
     const { code } = body
-    const filters = body.objects[0].children
-      .map(o => ({
-        id: o.id,
-        title: o.title,
-        cropped: o.is_paid ? true : o.only_cropped,
-        paid: o.is_paid,
-      }))
+    let filters = []
+    let apply = o => {
+      if (o.type && o.type === 'folder') {
+        o.children.forEach(child => apply(child))
+      } else if (o) {
+        if (filters.map(f => f.id).indexOf(o.id) === -1) {
+          filters.push({
+            id: o.id,
+            title: o.title,
+            cropped: o.is_paid ? true : o.only_cropped,
+            paid: o.is_paid,
+          })
+        }
+      }
+    }
+    body.objects.forEach(child => apply(child))
 
     return { code, deviceID, filters }
   } catch (err) {
@@ -62,13 +89,12 @@ const getFilterImage = async (args, filterID = 'no-filter') => {
 
   const [filter] = filterArr
   const cropped = filter.cropped ? '1' : '0'
-  const url = `${API_BASE_URL}/api/v2.11/photos/${args.code}/filters/${filter.id}?cropped=${cropped}`
+  const url = `${API_BASE_URL}/api/v3.1/photos/${args.code}/filters/${filter.id}?cropped=${cropped}`
 
   try {
     const { body } = await superagent.get(url)
       .set('User-Agent', API_USER_AGENT)
       .set('X-FaceApp-DeviceID', args.deviceID)
-
     return body
   } catch (err) {
     throw err
