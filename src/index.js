@@ -78,10 +78,7 @@ const getFilterImage = async (args, filterID = 'no-filter') => {
 
   const [filter] = filterArr
   const cropped = filter.cropped ? '1' : '0'
-  console.log(filterArr)
   const url = `${API_BASE_URL}/api/v3.1/photos/${args.code}/filters/${filter.id}?cropped=${cropped}`
-  console.log(args.deviceID,".")
-  console.log(url)
 
   try {
     const { body } = await superagent.get(url)
