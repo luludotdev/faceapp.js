@@ -2,8 +2,15 @@
 const { Spinner } = require('cli-spinner')
 const program = require('commander')
 const chalk = require('chalk')
-const fs = require('fs-extra')
+const fs = require('fs')
+const { promisify } = require('util')
 const faceapp = require('../src/index')
+
+const fse = {
+  readFile: promisify(fs.readFile),
+  writeFile: promisify(fs.writeFile),
+  exists: promisify(fs.exists),
+}
 
 // Allow Console Statements
 /* eslint no-console: 0 */
@@ -26,9 +33,9 @@ const main = p => {
 }
 
 const listFilters = async () => {
-  let filters = (await faceapp.listFilters()).filter(x => x.id !== 'no-filter')
-  let free = filters.filter(x => !x.paid)
-  let paid = filters.filter(x => x.paid)
+  const filters = (await faceapp.listFilters()).filter(x => x.id !== 'no-filter')
+  const free = filters.filter(x => !x.paid)
+  const paid = filters.filter(x => x.paid)
 
   console.log(chalk`{green ${'Free Filters:'}}
 ${free.map(x => x.id).join(' ')}
@@ -47,24 +54,24 @@ const run = async p => {
     return false
   }
 
-  let [input] = p.args
-  let { output, filter } = p
+  const [input] = p.args
+  const { output, filter } = p
 
-  let exists = await fs.exists(input)
+  const exists = await fse.exists(input)
   if (!exists) {
     console.log(chalk.red('file not found'))
     return false
   }
 
-  let spinner = new Spinner('%s processing...')
+  const spinner = new Spinner('%s processing...')
   spinner.setSpinnerString(process.platform === 'win32' ? 0 : 18)
   spinner.start()
   try {
-    let image = await fs.readFile(input)
-    let final = await faceapp.process(image, filter)
+    const image = await fse.readFile(input)
+    const final = await faceapp.process(image, filter)
 
-    if (output) await fs.writeFile(output, final)
-    else await fs.writeFile(input, final)
+    if (output) await fse.writeFile(output, final)
+    else await fse.writeFile(input, final)
 
     spinner.stop(true)
     console.log(chalk.green(`saved ${output ? output : input} successfully!`))
