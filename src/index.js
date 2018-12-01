@@ -25,53 +25,46 @@ const superagent = require('superagent')
  */
 const getAvailableFilters = async file => {
   const deviceID = generateDeviceID()
-  try {
-    let body = {
-      app_version: '3.2.1',
-      device_id: deviceID,
-      registration_id: deviceID,
-      device_model: 'ZTE U950',
-      lang_code: 'en-US',
-      sandbox: 'False',
-      system_version: '4.4.2',
-      token_type: 'fcm',
-    }
-    await superagent.post('https://api.faceapp.io/api/v3.0/devices/register')
-      .set('Content-Type', 'application/json')
-      .set('User-Agent', API_USER_AGENT)
-      .set('X-FaceApp-DeviceID', deviceID)
-      .send(JSON.stringify(body))
-  } catch (err) {
-    throw err
-  }
-  try {
-    const { body } = await superagent.post(`${API_BASE_URL}/api/v3.1/photos`)
-      .set('User-Agent', API_USER_AGENT)
-      .set('X-FaceApp-DeviceID', deviceID)
-      .attach('file', file, 'image.png')
 
-    const { code } = body
-    let filters = []
-    let apply = o => {
-      if (o.type && o.type === 'folder') {
-        o.children.forEach(child => apply(child))
-      } else if (o) {
-        if (filters.map(f => f.id).indexOf(o.id) === -1) {
-          filters.push({
-            id: o.id,
-            title: o.title,
-            cropped: o.is_paid ? true : o.only_cropped,
-            paid: o.is_paid,
-          })
-        }
-      }
-    }
-    body.objects.forEach(child => apply(child))
-
-    return { code, deviceID, filters }
-  } catch (err) {
-    throw err
+  const payload = {
+    app_version: '3.2.1',
+    device_id: deviceID,
+    registration_id: deviceID,
+    device_model: 'ZTE U950',
+    lang_code: 'en-US',
+    sandbox: 'False',
+    system_version: '4.4.2',
+    token_type: 'fcm',
   }
+
+  await superagent.post('https://api.faceapp.io/api/v3.0/devices/register')
+    .set('Content-Type', 'application/json')
+    .set('User-Agent', API_USER_AGENT)
+    .set('X-FaceApp-DeviceID', deviceID)
+    .send(JSON.stringify(payload))
+
+  const { body } = await superagent.post(`${API_BASE_URL}/api/v3.1/photos`)
+    .set('User-Agent', API_USER_AGENT)
+    .set('X-FaceApp-DeviceID', deviceID)
+    .attach('file', file, 'image.png')
+
+  const { code, objects } = body
+
+  const mapFilters = x => {
+    if (x.type === 'folder') return x.children.map(mapFilters)
+
+    return {
+      id: x.id,
+      title: x.title,
+      cropped: x.is_paid ? true : x.only_cropped || false,
+      paid: x.is_paid,
+    }
+  }
+
+  const flattenDeep = arr => arr.reduce((acc, val) => Array.isArray(val) ? acc.concat(flattenDeep(val)) : acc.concat(val), [])
+  const filters = flattenDeep(objects.map(mapFilters))
+
+  return { code, deviceID, filters }
 }
 
 /**
