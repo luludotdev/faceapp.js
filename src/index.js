@@ -84,14 +84,11 @@ const getFilterImage = async (args, filterID = 'no-filter') => {
   const cropped = filter.cropped ? '1' : '0'
   const url = `${API_BASE_URL}/api/v3.1/photos/${args.code}/filters/${filter.id}?cropped=${cropped}`
 
-  try {
-    const { body } = await superagent.get(url)
-      .set('User-Agent', API_USER_AGENT)
-      .set('X-FaceApp-DeviceID', args.deviceID)
-    return body
-  } catch (err) {
-    throw err
-  }
+  const { body } = await superagent.get(url)
+    .set('User-Agent', API_USER_AGENT)
+    .set('X-FaceApp-DeviceID', args.deviceID)
+
+  return body
 }
 
 /**
@@ -133,16 +130,12 @@ const process = async (path, filterID) => {
  * @returns {Promise.<Filter[]>|Promise.<string[]>}
  */
 const listFilters = async (minimal = false) => {
-  try {
-    const { body } = await superagent.get(TEST_IMAGE_URL)
-    const allFilters = await getAvailableFilters(body)
+  const { body } = await superagent.get(TEST_IMAGE_URL)
+  const allFilters = await getAvailableFilters(body)
 
-    return minimal ?
-      allFilters.filters.map(a => a.id) :
-      allFilters.filters
-  } catch (err) {
-    throw err
-  }
+  return minimal ?
+    allFilters.filters.map(a => a.id) :
+    allFilters.filters
 }
 
 module.exports = {
