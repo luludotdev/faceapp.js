@@ -62,7 +62,9 @@ const getAvailableFilters = async file => {
   }
 
   const flattenDeep = arr => arr.reduce((acc, val) => Array.isArray(val) ? acc.concat(flattenDeep(val)) : acc.concat(val), [])
-  const filters = flattenDeep(objects.map(mapFilters))
+  const flat = flattenDeep(objects.map(mapFilters))
+  const filters = flat.filter((obj, pos, arr) => arr.map(mapObj => mapObj.id).indexOf(obj.id) === pos)
+    .sort((a, b) => a.id.localeCompare(b.id))
 
   return { code, deviceID, filters }
 }
